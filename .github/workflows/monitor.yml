@@ -1,4 +1,4 @@
-name: resale monitor
+name: resale monitor 41
 
 on:
   schedule:
@@ -11,18 +11,13 @@ jobs:
     steps:
       - name: check resale
         run: |
-          URLS=(
-            "https://relief-ticket.jp/events/artist/41/129"
-            "https://relief-ticket.jp/events/artist/40/127"
-          )
+          URL="https://relief-ticket.jp/events/artist/41/129"
 
-          for url in "${URLS[@]}"; do
-            html=$(curl -s "$url")
+          html=$(curl -s "$URL")
 
-            if echo "$html" | grep -q "リセール"; then
-              curl -X POST https://api.line.me/v2/bot/message/broadcast \
-              -H "Content-Type: application/json" \
-              -H "Authorization: Bearer ${{ secrets.LINE_TOKEN }}" \
-              -d "{\"messages\":[{\"type\":\"text\",\"text\":\"リセール出品検知: $url\"}]}"
-            fi
-          done
+          if echo "$html" | grep -q "リセール"; then
+            curl -X POST https://api.line.me/v2/bot/message/broadcast \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.LINE_TOKEN }}" \
+            -d "{\"messages\":[{\"type\":\"text\",\"text\":\"リセール出品検知: $URL\"}]}"
+          fi
